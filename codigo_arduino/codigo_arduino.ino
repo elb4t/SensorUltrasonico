@@ -8,9 +8,19 @@ void setup() {
 }
 
 void loop() {
-  Serial.print("Distancia: ");
-  Serial.println(distancia(TriggerPin, EchoPin));
-  delay(1000);
+  if (Serial.available() > 0) {
+    char command = (char) Serial.read(); 
+    switch (command) {
+      case 'H':
+        Serial.println("Hola Mundo"); 
+        break;
+      case 'D':
+        Serial.print("Distancia: ");
+        Serial.println(distancia(TriggerPin, EchoPin));
+        break;
+    }
+  }
+  Serial.flush();
 }
 
 int distancia(int TriggerPin, int EchoPin) {
