@@ -43,7 +43,7 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         val manager = PeripheralManager.getInstance()
 
-        try {
+        /*try {
             mEcho = manager.openGpio(ECHO_PIN_NAME)
             mEcho?.setDirection(Gpio.DIRECTION_IN)
             mTrigger = manager.openGpio(TRIGGER_PIN_NAME)
@@ -51,7 +51,20 @@ class MainActivity : Activity() {
             handler.post(runnable)
         } catch (e: IOException) {
             Log.e(TAG, "Error en al acceder a salida", e)
+        }*/
+
+        Log.i(TAG, "Lista de UART disponibles: " + ArduinoUart.disponibles())
+        val uart = ArduinoUart("UART0", 115200)
+        Log.d(TAG, "Mandado a Arduino: H")
+        uart.escribir("H")
+        try {
+            Thread.sleep(5000)
+        } catch (e: InterruptedException) {
+            Log.w(TAG, "Error en sleep()", e)
         }
+
+        val s = uart.leer()
+        Log.d(TAG, "Recibido de Arduino: $s")
     }
 
     private val runnable: Runnable = object: Runnable {
